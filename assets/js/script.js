@@ -136,4 +136,83 @@ $("#item_btn>button[type='button']").eq(2).on("click", () => {
 
 //----------------------------------Place order from-------------------------------------
 
-//-------------submit---------
+var row_index1 = null;
+
+//Submit
+$("#storebtns>button[type='button']").eq(0).on("click", () => {
+    let item_id = $("#item_id").val();
+    let item_name = $("#item_name").val();
+    let quantity = $("#quantity").val();
+    let price = $("#price").val();
+    let description = $("#description").val();
+
+    let record = `<tr><td class="item_id">${item_id}</td><td class="item_name">${item_name}</td><td class="quantity">${quantity}</td><td class="price">${price}</td><td class="description">${description}</td></tr>`;
+    $("#item-tbl-body").append(record);
+
+    $("#storebtns>button[type='reset']").click();
+
+});
+
+//Click Row
+$("tbody").on("click", "tr", function() {
+    row_index1 = $(this).index();
+
+    console.log(row_index1);
+
+    let item_id = $(this).find(".item_id").text();
+    let item_name = $(this).find(".item_name").text();
+    let quantity = $(this).find(".quantity").text();
+    let price = $(this).find(".price").text();
+    let description = $(this).find(".description").text();
+
+    $("#item_id").val(item_id);
+    $("#item_name").val(item_name);
+    $("#quantity").val(quantity);
+    $("#price").val(price);
+    $("#description").val(description);
+})
+
+//Update
+$("#storebtns>button[type='button']").eq(1).on("click", () => {
+    let item_id = $("#item_id").val();
+    let item_name = $("#item_name").val();
+    let quantity = $("#quantity").val();
+    let price = $("#price").val();
+    let description = $("#description").val();
+
+    let record = `<td class="item_id">${item_id}</td><td class="item_name">${item_name}</td><td class="quantity">${quantity}</td><td class="price">${price}</td><td class="description">${description}</td>`;
+    $("tbody>tr").eq(row_index1).html(record);
+
+    $("#storebtns>button[type='reset']").click();
+
+});
+
+//Delete
+$("#storebtns>button[type='button']").eq(2).on("click", () => {
+    $("tbody>tr").eq(row_index1).remove();
+    $("button[type='reset']").click();
+})
+
+
+//-----------------------------Place Order--------------------------------
+let netTot = 0;
+$("#placeOrderbtns>button[type='button']").eq(0).on("click", () => {
+    let item_id = $("#item_id_placeOrder").val();
+    let quantity = $("#quantity_placeOrder").val();
+    let total = quantity*100;
+
+    let record = `<tr><td class="item_id">${item_id}</td><td class="quantity">${quantity}</td><td class="price">${total}</td></tr>`;
+    $("#placeOrder-tbody").append(record);
+
+    netTot+=total;
+
+    $("#tot").text(netTot);
+});
+
+//Calculate
+$("#cal").on("click", () => {
+    let cash = $("#amount").val()-netTot;
+
+    $("#cash2").text(cash);
+});
+
